@@ -1,17 +1,13 @@
-/**
- * Created by Admininstrator on 27.02.2017.
- */
-
 class WebCoin {
     constructor(coin) {
         this._name         = coin.name;
-        this.id            = coin.id;
         this.last          = coin.last;
+        this.high24hr      = coin.high24hr;
         this.lowestAsk     = coin.lowestAsk;
         this.highestBid    = coin.highestBid;
         this.percentChange = coin.percentChange;
-        this.isFrozen      = coin.isFrozen;
-        this.high24hr      = coin.high24hr;
+        // this.id            = coin.id;
+        // this.isFrozen      = coin.isFrozen;
     }
 
     get name() {
@@ -50,36 +46,30 @@ class WebCoin {
     }
 
     static coinsToArray(obj) {
-        let arrNameCoin = Object.keys(obj);
+        let arr = [];
+        for (let subObjName in obj) {
+            if (obj.hasOwnProperty(subObjName)) {
+                if (parseInt(obj[subObjName].isFrozen) == 0) {
+                    obj[subObjName].name = subObjName;
+                    delete obj[subObjName].isFrozen;
+                    arr.push(new WebCoin(obj[subObjName]))
+                }
+            }
+        }
 
-        return arrNameCoin.map(value => {
-            obj[value].name = value;
-            return new WebCoin(obj[value]);
-        });
-
-        /*
-         return arrNameCoin.map(function (value) {
-         obj[value].name = value;
-         return new WebCoin(obj[value]);
-         });
-         */
+        return arr;
     }
 
     static printCoins(coinsArray) {
-        // coinsArray.forEach(function (e) {
-        //     console.log(e);
-        // });
-        coinsArray.forEach((e) => {
-            console.log(e)
-        });
-
+        WebCoin.addTableHeader(coinsArray[0]);
+        WebCoin.addTableElements(coinsArray);
     }
 
     static applyCoinsFilter(arr, filter = WebCoin.filter) {
         return arr.filter(function (elem) {
-            let patt = new RegExp(`^${WebCoin.filter}`, 'ig'); // /^BTC_/ig
+            let pattern = new RegExp(`^${WebCoin.filter}`, 'ig'); // /^BTC_/ig
 
-            return patt.exec(elem.name);
+            return pattern.exec(elem.name);
         })
     }
 
@@ -103,10 +93,37 @@ class WebCoin {
             return value;
         });
     }
+
+    static addTableHeader(obj) {
+        let th = '';
+        for (let prop in obj) {
+            if (obj.hasOwnProperty(prop)) {
+                th += `<th>${prop}</th>\n`;
+            }
+        }
+        $('#poloniex').find('thead tr').html(th);
+    }
+
+    static addTableElements(arr) {
+        let tr = '';
+        arr.forEach(obj => {
+            tr += '<tr>';
+            for (let prop in obj) {
+                if (obj.hasOwnProperty(prop)) {
+                    tr += `<td>${obj[prop]}</td>\n`;
+                }
+            }
+            tr += '</tr>\n';
+
+        });
+
+        $('#poloniex').find('tbody').html(tr);
+    }
 }
 
-WebCoin.urlPolonix = "https://poloniex.com/public?command=returnTicker"; // static class variable
-WebCoin.filter     = 'BTC_';
+WebCoin.urlPoloniex = "https://poloniex.com/public?command=returnTicker"; // static class variable
+WebCoin.urlBitrix   = "https://bittrex.com/Home/Api"; // static class variable
+WebCoin.filter      = 'BTC_';
 
 /*
  WebCoin.getCoinsFromUrlPromise(WebCoin.urlPolonix)
