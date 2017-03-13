@@ -1,0 +1,5 @@
+{
+  "coins": ["ZEC","XMG","XMR","BTC","XZC"],
+  "urlPoloniex": "https://poloniex.com/public?command=returnTicker",
+  "urlCryptopia": "https://www.cryptopia.co.nz/api/GetMarkets"
+}

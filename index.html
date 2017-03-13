@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap Template</title>
+    <title>Cryptocurrency price</title>
     
     <!-- Bootstrap -->
-    <link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- HTML5 shim and Respond.src for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.src doesn't work if you view the page via file:// -->
@@ -19,30 +19,59 @@
 </head>
 <body>
 <div class="container">
-    <h2>Basic Table</h2>
-    <p>The .table class adds basic styling (light padding and only horizontal dividers) to a table:</p>
+    <div class="page-header">
+        <h2 class="text-center">
+            <span class="label label-info">Cryptocurrency price</span>
+        </h2>
+    </div>
     
-    <table id='poloniex' class="table table-hover table-striped table-condensedk">
-        <thead>
-        <tr>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <a class="btn btn-primary btn-link btn-lg" href="https://poloniex.com" role="button">Poloniex</a>
+        </div>
+        <!-- Table -->
+        <table id='poloniex' class="table table-hover table-striped table-condensedk">
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <a class="btn btn-primary btn-link btn-lg" href="https://www.cryptopia.co.nz" role="button">Cryptopia</a>
+        </div>
+        <!-- Table -->
+        <table id='cryptopia' class="table table-hover table-striped table-condensedk">
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 <footer>
-    
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="./dist/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!--<script src="src/web-coin.js"></script>-->
-    <script src="./src/main.js"></script>
+    <script src="./dist/bootstrap.min.js"></script>
+    
+    <script src="./dist/index.js"></script>
 </footer>
 </html>

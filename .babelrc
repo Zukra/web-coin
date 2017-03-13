@@ -1,0 +1,12 @@
+{
+  "presets": [["env",{}]],
+  "ignore": [
+    "bower_components",
+    "node_modules",
+    "test",
+    "tests",
+    "dist"
+  ],
+  "comments": true,
+  "babelrc": true
+}
