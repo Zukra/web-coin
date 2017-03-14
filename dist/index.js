@@ -72,29 +72,31 @@ var Coin = exports.Coin = function () {
         }
     }, {
         key: "applyCoinsFilter",
-        value: function applyCoinsFilter(arr) {
-            var filter = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : /''/;
-
-
+        value: function applyCoinsFilter(arr, filter) {
+            if (filter === undefined) {
+                return false;
+            }
             return arr.filter(function (elem) {
-
                 return filter.exec(elem.name);
             });
         }
     }, {
         key: "printCoins",
-        value: function printCoins(coinsArray) {
-            var idTable = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-
+        value: function printCoins(coinsArray, idTable) {
+            if (idTable === undefined) {
+                return false;
+            }
             Coin.addTableHeader(coinsArray[0], idTable);
             Coin.addTableElements(coinsArray, idTable);
+
             return idTable;
         }
     }, {
         key: "addTableHeader",
-        value: function addTableHeader(obj) {
-            var idTable = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-
+        value: function addTableHeader(obj, idTable) {
+            if (idTable === undefined) {
+                return false;
+            }
             var th = '';
             for (var prop in obj) {
                 if (obj.hasOwnProperty(prop)) {
@@ -119,7 +121,7 @@ var Coin = exports.Coin = function () {
                 tr += "<tr>" + td + "</tr>\n";
             });
 
-            document.querySelectorAll('#' + idTable + ' tbody')[0].innerHTML = tr;
+            document.querySelectorAll("#" + idTable + " tbody")[0].innerHTML = tr;
         }
     }]);
 
@@ -283,47 +285,55 @@ var _coins = require("./coins");
 (function ($) {
     "use strict";
 
-    $.getJSON("./config.json", function (json) {
-        initCryptopia(json);
-        initPoloniex(json);
+    run(SETTINGS);
+
+    if (SETTINGS.refresh.status) {
         setInterval(function () {
-            initCryptopia(json);
-            initPoloniex(json);
-        }, 50000);
-    }).fail(function () {
-        alert('Error loading settings!');
-    });
+            return run(SETTINGS);
+        }, SETTINGS.refresh.time);
+    }
+
+    function run(config) {
+        initCryptopia(config);
+        initPoloniex(config);
+    }
 
     function initPoloniex(config) {
-        var poloniex = _coins.PoloniexCoin,
-            tableId = 'poloniex';
+        if (config === undefined) {
+            return false;
+        }
+        var poloniex = _coins.PoloniexCoin;
 
-        poloniex.filter = poloniex.getCoinsFilter(config['coins']);
+        poloniex.filter = poloniex.getCoinsFilter(config.coins);
 
-        poloniex.getCoinsFromUrlPromise(config['urlPoloniex']).then(poloniex.parseJson).then(poloniex.coinsToArray).then(function (coinsArray) {
-            return poloniex.printCoins(coinsArray, tableId);
+        poloniex.getCoinsFromUrlPromise(config.poloniex.url).then(poloniex.parseJson).then(poloniex.coinsToArray).then(function (coinsArray) {
+            return poloniex.printCoins(coinsArray, config.poloniex.tableId);
         }).then(setTableColumnColor).catch(function (error) {
             return console.error(error);
         });
     }
 
     function initCryptopia(config) {
-        var cryptopia = _coins.CryptopiaCoin,
-            tableId = 'cryptopia';
+        if (config === undefined) {
+            return false;
+        }
 
-        cryptopia.filter = cryptopia.getCoinsFilter(config['coins']);
+        var cryptopia = _coins.CryptopiaCoin;
 
-        cryptopia.getCoinsFromUrlPromise(config['urlCryptopia']).then(cryptopia.parseJson).then(function (obj) {
+        cryptopia.filter = cryptopia.getCoinsFilter(config.coins);
+        cryptopia.getCoinsFromUrlPromise(config.cryptopia.url).then(cryptopia.parseJson).then(function (obj) {
             return cryptopia.coinsToArray(obj.Data);
         }).then(function (coinsArray) {
-            return cryptopia.printCoins(coinsArray, tableId);
+            return cryptopia.printCoins(coinsArray, config.cryptopia.tableId);
         }).then(setTableColumnColor).catch(function (error) {
             return console.error(error);
         });
     }
 
-    function setTableColumnColor() {
-        var tableId = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    function setTableColumnColor(tableId) {
+        if (tableId === undefined || !tableId) {
+            return false;
+        }
 
         $("#" + tableId).find("tbody tr").each(function (index, element) {
             $(element).find('td').each(function (i, elem) {

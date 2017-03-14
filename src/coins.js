@@ -49,21 +49,29 @@ export class Coin {
         });
     }
 
-    static applyCoinsFilter(arr, filter = /''/) {
-
+    static applyCoinsFilter(arr, filter) {
+        if (filter === undefined) {
+            return false;
+        }
         return arr.filter(function (elem) {
-
             return filter.exec(elem.name);
         })
     }
 
-    static printCoins(coinsArray, idTable = '') {
+    static printCoins(coinsArray, idTable) {
+        if (idTable === undefined) {
+            return false;
+        }
         Coin.addTableHeader(coinsArray[0], idTable);
         Coin.addTableElements(coinsArray, idTable);
+
         return idTable;
     }
 
-    static addTableHeader(obj, idTable = '') {
+    static addTableHeader(obj, idTable) {
+        if (idTable === undefined) {
+            return false;
+        }
         let th = '';
         for (let prop in obj) {
             if (obj.hasOwnProperty(prop)) {
@@ -85,7 +93,7 @@ export class Coin {
             tr += `<tr>${td}</tr>\n`;
         });
 
-        document.querySelectorAll('#' + idTable + ' tbody')[0].innerHTML = tr;
+        document.querySelectorAll(`#${idTable} tbody`)[0].innerHTML = tr;
     }
 }
 
@@ -142,6 +150,7 @@ export class CryptopiaCoin extends Coin {
         return CryptopiaCoin.sortCoins(CryptopiaCoin.setCoinNames(arr));
     }
 }
+
 export class PoloniexCoin extends Coin {
 
     constructor(coin) {
