@@ -1,8 +1,8 @@
-### Cryptocurrency price from https://poloniex.com and https://www.cryptopia.co.nz
+### Get cryptocurrency price from https://poloniex.com and https://www.cryptopia.co.nz using API
 
 #### This is a small project using `ECMAScript 6`, `jQuery` and `Bootstrap`  to obtain the value of the cryptocurrency.
 
-Video URL     [YouTube](https://youtu.be/IbpalZbR94M)
+Video URL     [YouTube](https://youtu.be/uTkM31kEi-M)
 
 ----
 
